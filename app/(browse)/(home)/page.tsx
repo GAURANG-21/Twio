@@ -1,10 +1,7 @@
-import { Navbar } from "../_components/navbar";
-
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      HomePage
-    </>
+    <div className="flex flex-col gap-y-4">
+      <h1>HomePage</h1>
+    </div>
   );
 }
