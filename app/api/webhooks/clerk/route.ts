@@ -28,8 +28,19 @@ export async function POST(req: Request) {
     });
   }
 
-  // Get body
-  const payload = await req.json();
+  // Parse request body
+  let payload;
+  try {
+    payload = await req.json();
+  } catch (err) {
+    console.error("Error: Unable to parse request body", err);
+    return new Response("Error: Invalid JSON payload", { status: 400 });
+  }
+
+  if (!payload) {
+    return new Response("Error: Missing payload", { status: 400 });
+  }
+
   const body = JSON.stringify(payload);
 
   let evt: WebhookEvent;
