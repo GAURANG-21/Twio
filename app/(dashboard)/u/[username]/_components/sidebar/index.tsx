@@ -1,5 +1,12 @@
 import { Wrapper } from "./wrapper";
+import { Toggle } from "./toggle";
+import { Navigation } from "./navigation";
 
-export const Sidebar = () => {
-  return <Wrapper>Sidebar!</Wrapper>;
-};
+export function Sidebar() {
+  return (
+    <Wrapper>
+      <Toggle />
+      <Navigation />
+    </Wrapper>
+  );
+}
