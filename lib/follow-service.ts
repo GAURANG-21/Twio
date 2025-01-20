@@ -104,7 +104,7 @@ export const getFollowedUsers = async () => {
               following: {
                 blocking: {
                   none: {
-                    blockerId: self.id,
+                    blockedId: self.id,
                   },
                 },
               },
