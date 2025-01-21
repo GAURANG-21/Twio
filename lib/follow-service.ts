@@ -100,12 +100,10 @@ export const getFollowedUsers = async () => {
             followerId: self.id,
           },
           {
-            NOT: {
-              following: {
-                blocking: {
-                  none: {
-                    blockedId: self.id,
-                  },
+            following: {
+              blocking: {
+                none: {
+                  blockedId: self.id,
                 },
               },
             },

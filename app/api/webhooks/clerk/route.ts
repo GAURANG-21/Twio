@@ -28,10 +28,11 @@ export async function POST(req: Request) {
     });
   }
 
-  // Parse request body
   let payload;
   try {
-    payload = await req.json();
+    let text = await req.text();
+    text = text + "";
+    payload = await JSON.parse(text);
   } catch (err) {
     console.error("Error: Unable to parse request body", err);
     return new Response("Error: Invalid JSON payload", { status: 400 });
@@ -67,6 +68,11 @@ export async function POST(req: Request) {
         externalUserId: payload.data.id,
         imageUrl: payload.data.image_url,
         username: payload.data.username,
+        stream: {
+          create: {
+            name: `${payload.data.username}'s Stream`,
+          },
+        },
       },
     });
   }
