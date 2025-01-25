@@ -101,6 +101,6 @@ export const createIngress = async (ingressType: IngressInput) => {
   //! }
 
   //* To resolve, convert the ingress to JSON and then parse the JSON on the client side.
-  const serializedIngress = JSON.stringify(ingress)
+  const serializedIngress = JSON.stringify(ingress);
   return serializedIngress;
 };
