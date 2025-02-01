@@ -1,6 +1,6 @@
 "use client";
 
-import { useChatSidebar } from "@/store/use-chat-sidebar";
+import { ChatVariant, useChatSidebar } from "@/store/use-chat-sidebar";
 import {
   useChat,
   useConnectionState,
@@ -10,6 +10,7 @@ import { ConnectionState } from "livekit-client";
 import { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { ChatHeader } from "./chat-header";
+import { ChatForm } from "./chat-form";
 
 interface ChatProps {
   viewerName: string;
@@ -71,6 +72,24 @@ export const Chat = ({
   return (
     <div className="flex flex-col pt-0 bg-background border-l border-b h-[calc(100vh-80px)]">
       <ChatHeader />
+      {variant == ChatVariant.CHAT && (
+        <>
+          <ChatForm
+            onSubmit={onSubmit}
+            onChange={onChange}
+            value={value}
+            isHidden={isHidden}
+            isFollowersOnly={isChatFollowersOnly}
+            isDelayed={isChatDelayed}
+            isFollowing={isFollowing}
+          />
+        </>
+      )}
+      {variant === ChatVariant.COMMUNITY && (
+        <>
+          <p>Community Page</p>
+        </>
+      )}
     </div>
   );
 };
