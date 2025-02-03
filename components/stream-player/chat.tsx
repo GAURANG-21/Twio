@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { ChatHeader } from "./chat-header";
 import { ChatForm } from "./chat-form";
+import { ChatList } from "./chat-list";
 
 interface ChatProps {
   viewerName: string;
@@ -41,7 +42,7 @@ export const Chat = ({
   const isOnline = participant && connectionState === ConnectionState.Connected;
 
   //*Chats can't be sent if they are disabled or the host is not online
-  const isHidden = !isChatEnabled && !isOnline;
+  const isHidden = !isOnline || !isChatEnabled;
 
   const [value, setValue] = useState(""); // Message to be sent
   const { chatMessages: messages, send } = useChat(); //Manages chats sent in the specific room
@@ -74,6 +75,7 @@ export const Chat = ({
       <ChatHeader />
       {variant == ChatVariant.CHAT && (
         <>
+          <ChatList messages={reversedMessages} isHidden={isHidden} />
           <ChatForm
             onSubmit={onSubmit}
             onChange={onChange}
