@@ -41,7 +41,9 @@ export const ChatCommunity = ({
     }, [] as (RemoteParticipant | LocalParticipant)[]);
 
     return deduped.filter((participant) => {
-      return participant.name?.toLowerCase().includes(debouncedValue[0]);
+      return participant.name
+        ?.toLowerCase()
+        .includes(debouncedValue.toString().toLowerCase());
     });
   }, [participants, debouncedValue]);
 
