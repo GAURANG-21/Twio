@@ -18,6 +18,11 @@ export const InfoCard = ({
   viewerIdentity,
   hostIdentity,
 }: InfoCardProps) => {
+  const hostAsViewer = `host-${hostIdentity}`;
+  const isHost = viewerIdentity === hostAsViewer;
+
+  if (!isHost) return null;
+
   return (
     <div className="px-4">
       <div className="rounded-xl bg-background">
@@ -44,8 +49,13 @@ export const InfoCard = ({
           <div>
             <h3 className="text-sm text-muted-foreground mb-2">Thumbnail: </h3>
             {thumbnailUrl && (
-              <div>
-                <Image fill src={thumbnailUrl} alt={name} />
+              <div className="relative aspect-video rounded-md overflow-hidden w-[200px] border border-white/10">
+                <Image
+                  fill
+                  src={thumbnailUrl}
+                  alt={name}
+                  className="object-cover"
+                />
               </div>
             )}
           </div>

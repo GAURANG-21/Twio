@@ -61,7 +61,7 @@ export const StreamPlayer = ({
           />
           <InfoCard
             name={stream.name}
-            hostIdentity={user.username}
+            hostIdentity={user.id}
             viewerIdentity={identity}
             thumbnailUrl={stream.thumbnailUrl}
           />
