@@ -1,7 +1,7 @@
+import { StreamPlayer } from "@/components/stream-player";
+import { isBlockedByUser } from "@/lib/block-service";
 import { isFollowingUser } from "@/lib/follow-service";
 import { getUserByUsername } from "@/lib/user-service";
-import { Actions } from "./_components/actions";
-import { isBlockedByUser } from "@/lib/block-service";
 import { notFound } from "next/navigation";
 
 interface UsernameProps {
@@ -11,25 +11,18 @@ interface UsernameProps {
 export default async function Username({ params }: UsernameProps) {
   const { username } = await params; // In most cases, this doesn't require `await`, but it's safer to handle.
   const user = await getUserByUsername(username);
-  if (!user) {
+  if (!user || !user.stream) {
     notFound();
   }
+
   const isFollowing = await isFollowingUser(user.id);
   const isBlocked = await isBlockedByUser(user.id);
-  // if (isBlocked) {
-  //   notFound();
-  // }
+
+  if (isBlocked) {
+    notFound();
+  }
+
   return (
-    <div>
-      <p>{`${username}`}</p>
-      <p>{`${user.externalUserId}`}</p>
-      <p>{`isFollowing: ${isFollowing}`}</p>
-      <p>{`isBlocked: ${isBlocked}`}</p>
-      <Actions
-        userId={user.id}
-        isFollowing={isFollowing}
-        isBlocked={isBlocked}
-      />
-    </div>
+    <StreamPlayer user={user} stream={user.stream} isFollowing={isFollowing} />
   );
 }

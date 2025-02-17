@@ -6,6 +6,7 @@ const publicRoutes = createRouteMatcher([
   "/api/webhooks/(.*)",
   "/",
   "/api/uploadthing",
+  "/:username",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
