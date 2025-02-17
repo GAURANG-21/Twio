@@ -8,6 +8,12 @@ export const getUserByUsername = async (username: string) => {
     },
     include: {
       stream: true,
+      //* To get the count of followers of the host
+      _count: {
+        select: {
+          followedBy: true,
+        },
+      },
     },
   });
 
