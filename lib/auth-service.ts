@@ -23,8 +23,6 @@ export const getSelfByUsername = async (username: string) => {
 
   if (!self || !self.username) throw new Error("Unauthorized");
 
-  if (self.username !== username) throw new Error("Unauthorized"); //* Trying to accessing another user
-
   const user = await db.user.findUnique({
     where: {
       username,
@@ -32,6 +30,8 @@ export const getSelfByUsername = async (username: string) => {
   });
 
   if (!user) throw new Error("User not found!");
+
+  if (self.username !== user.username) throw new Error("Unauthorized"); //* Trying to accessing another user
 
   return user;
 };
