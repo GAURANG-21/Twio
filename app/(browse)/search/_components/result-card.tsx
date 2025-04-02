@@ -2,7 +2,7 @@ import { Thumbnail, ThumbnailSkeleton } from "@/components/thumbnail";
 import { Skeleton } from "@/components/ui/skeleton";
 import { VerifiedMark } from "@/components/verified-mark";
 import { User } from "@prisma/client";
-import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import Link from "next/link";
 
 interface ResultCardProps {
@@ -38,9 +38,7 @@ export const ResultCard = ({ data }: ResultCardProps) => {
                     <p className="text-sm text-muted-foreground">{data.name}</p>
                     <p className="text-sm text-muted-foreground">
                         {
-                            formatDistanceToNow(new Date(data.updatedAt), {
-                                addSuffix: true
-                            })
+                            format(new Date(data.updatedAt) as Date, "yyyy-MM-dd")
                         }
                     </p>
                 </div>

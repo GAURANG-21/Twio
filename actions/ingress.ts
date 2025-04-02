@@ -16,17 +16,24 @@ import { db } from "@/lib/db";
 import { getSelf } from "@/lib/auth-service";
 import { revalidatePath } from "next/cache";
 
-const roomService = new RoomServiceClient(
-  process.env.LIVEKIT_API_URL!,
-  process.env.LIVEKIT_API_KEY!,
-  process.env.LIVEKIT_SECRET_KEY!
-);
+// Initialize clients with a check to ensure we're in a server environment
+let roomService: RoomServiceClient;
+let ingressClient: IngressClient;
 
-const ingressClient = new IngressClient(
-  process.env.LIVEKIT_API_URL!,
-  process.env.LIVEKIT_API_KEY!,
-  process.env.LIVEKIT_SECRET_KEY!
-);
+// Only initialize in a server environment
+if (typeof window === 'undefined') {
+  roomService = new RoomServiceClient(
+    process.env.LIVEKIT_API_URL!,
+    process.env.LIVEKIT_API_KEY!,
+    process.env.LIVEKIT_SECRET_KEY!
+  );
+
+  ingressClient = new IngressClient(
+    process.env.LIVEKIT_API_URL!,
+    process.env.LIVEKIT_API_KEY!,
+    process.env.LIVEKIT_SECRET_KEY!
+  );
+}
 
 export const resetIngresses = async (hostIdentity: string) => {
   const ingresses = await ingressClient.listIngress({
@@ -94,13 +101,7 @@ export const createIngress = async (ingressType: IngressInput) => {
 
   revalidatePath(`/u/${self.username}/keys`);
 
-  //! ingress cannot be passed directly because it is of type IngressInfo which contains classes of IngressAudioOptions, IngressVideoOptions, and IngressState.
-  //! Error encountered was: ⨯ [Error: Only plain objects, and a few built-ins, can be passed to Client Components from Server Components. Classes or null prototypes are not supported.
-  //! {}] {
-  //!   digest: '#a number'
-  //! }
-
-  //* To resolve, convert the ingress to JSON and then parse the JSON on the client side.
+  // Serialize the ingress object to avoid class prototype issues when passing to client components
   const serializedIngress = JSON.stringify(ingress);
   return serializedIngress;
 };

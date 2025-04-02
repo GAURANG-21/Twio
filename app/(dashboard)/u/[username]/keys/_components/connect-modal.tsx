@@ -22,12 +22,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { IngressInput } from "livekit-server-sdk";
 import { useState, useTransition, useRef, ComponentRef } from "react";
 import { toast } from "sonner";
 
-const RTMP = String(IngressInput.RTMP_INPUT);
-const WHIP = String(IngressInput.WHIP_INPUT);
+// Define these constants directly instead of importing from the SDK
+const RTMP = "1"; // IngressInput.RTMP_INPUT
+const WHIP = "2"; // IngressInput.WHIP_INPUT
 
 type IngressType = typeof RTMP | typeof WHIP;
 
@@ -47,6 +47,13 @@ export const ConnectModal = () => {
     });
   };
 
+  // Type guard to ensure the value is of IngressType
+  const handleValueChange = (value: string) => {
+    if (value === RTMP || value === WHIP) {
+      setIngressType(value);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -59,9 +66,9 @@ export const ConnectModal = () => {
         <Select
           disabled={isPending}
           value={ingressType}
-          onValueChange={(value) => setIngressType(value)}
+          onValueChange={handleValueChange}
         >
-          <SelectTrigger className="w-full ">
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Ingress Type" />
           </SelectTrigger>
           <SelectContent>
